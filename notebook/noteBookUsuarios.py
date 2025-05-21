@@ -1,26 +1,58 @@
 import pandas as pd
 
 usuariosDataFrame=pd.read_excel("./data/usuarios_sistema_completo.xlsx")
-#print(usuariosDataFrame)
+# print(usuariosDataFrame)
+# print(usuariosDataFrame.isnull().sum())
 
-print(usuariosDataFrame.isnull().sum()) #Verifica cuántos datos están vacíos
+# Necesito solo un listado de aprendices o estudiantes
+# print(usuariosDataFrame["tipo_usuario"].unique()) #Muestra los valores que hay dentro de esa columna
+listaAprendicesOEstudiantes=usuariosDataFrame.query('tipo_usuario=="estudiante"')
+# print(listaAprendicesOEstudiantes)
 
-#1. Necesito solo un listado de aprendices o estudiantes.
+# Necesito un listado de solo instructores o profesores
+# print(usuariosDataFrame["tipo_usuario"].unique()) #Muestra los valores que hay dentro de esa columna
+listaInstructoresOProfesores=usuariosDataFrame.query('tipo_usuario=="docente"')
+# print(listaInstructoresOProfesores)
 
-#2. Necesito un listado de solo instructores o profesores.
+# Necesito un listado de especialistas en desarrollo web o sistemas
+# print(usuariosDataFrame["especialidad"].unique()) #Muestra los valores que hay dentro de esa columna
+listaEspecialistasEnDlloWebODlloSistemas=usuariosDataFrame.query('especialidad=="Ingenieria de Sistemas"')
+# print(listaEspecialistasEnDlloWebODlloSistemas)
 
-#3. Necesito un listado de especialistas en dsrrllo web o sistemas.
+# Necesito un listado de solo usuarios con direcciones en Medellín
+usuariosDireccionMedellin = usuariosDataFrame.loc[
+    usuariosDataFrame["direccion"].str.contains("Medellín|Medellin|medellin", case=False, na=False)
+]
+# print(usuariosDireccionMedellin)
 
-#4. Necesito un listado de solo usuarios con direcciones en Medellín.
+# Necesito un listado de usuarios de cuyas direcciones terminan en sur
+usuariosDireccionSur = usuariosDataFrame.loc[
+    usuariosDataFrame["direccion"].str.contains("Sur|sur", case=False, na=False)
+]
+# print(usuariosDireccionSur)
 
-#5. Necesito un listado de solo usuarios cuyas direcciones terminen en SUR.
+# Necesito un listado de especialistas que contengan la palabra datos
+# print(usuariosDataFrame["especialidad"].unique()) #Muestra los valores que hay dentro de esa columna
+listadoEspecialistasPalabraDatos = usuariosDataFrame.loc[
+    usuariosDataFrame["especialidad"].str.contains("datos", case=False, na=False)
+]
+# print(listadoEspecialistasPalabraDatos)
 
-#6. Necesito un listado de especialistas o profesores que contengan la palabra Datos.(Que aparzca "Datos" en la descripcion de la especialidad).
+# Necesito docentes de Itagui
+listaDocentesDeItagui = usuariosDataFrame.loc[
+    usuariosDataFrame["direccion"].str.contains("Itagui|Itagüí", case=False, na=False), ["direccion", "tipo_usuario"]
+]
+# print(listaDocentesDeItagui)
 
-#7. Necesito docentes de itagui.
+# Necesito una lista de nacidos del 90 o anteriores
+# print(usuariosDataFrame["fecha_nacimiento"].dtype) #Esta en formato datetime64
+listaNacidosAntesDel90 = usuariosDataFrame.query('fecha_nacimiento <= "1990-12-31"')
+# print(listaNacidosAntesDel90)
 
-#8. Necesito una lista de nacidos en el 90 o antes.
+# Necesito un listado de instructores mayores o viejitos
+listaDocentesMayoresDeEdad=usuariosDataFrame.query('fecha_nacimiento <= "2007-05-06" and tipo_usuario == "docente"')
+# print(listaDocentesMayoresDeEdad)
 
-#9. Necesito un listado de instructores/profesor mayores.
-
-#10. Necesito un listado de profesores y estudiantes nacidos en el nuevo milenio.
+# Necesito un listado de estudiantes o profesores nacidos en el nuevo milenio
+listaEstudiantesYProfesoresNuevoMilenio=usuariosDataFrame.query('fecha_nacimiento >= "2000-01-01" and tipo_usuario == ["docente" , "estudiante"]')
+# print(listaEstudiantesYProfesoresNuevoMilenio)
